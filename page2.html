@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LP's Business Playbook - Strategy, Pricing & Mockups</title>
+    <style>
+        :root {
+            --bg-color: #f7f6fc;
+            --card-bg: #ffffff;
+            --primary: #5b42f3;
+            --primary-light: #8b78f6;
+            --accent-purple: #f0eeff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --green: #10b981;
+            --amber: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Header Navigation Banner */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(91, 66, 243, 0.2);
+            position: relative;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Back Button Styling */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            color: var(--primary);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .page-badge {
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: #ffffff;
+        }
+
+        /* Card Section Styling */
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive Table Design */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        th {
+            background-color: var(--accent-purple);
+            color: var(--primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 14px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background-color: #faf9fe;
+        }
+
+        /* Badges & Highlights */
+        .tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .tag-low { background: #ecfdf5; color: var(--green); }
+        .tag-medium { background: #fffbe3; color: var(--amber); }
+
+        /* Step-by-Step Grid */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .step-box {
+            background: var(--accent-purple);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .step-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .step-desc {
+            font-size: 0.88rem;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        /* Strategy Cards */
+        .strat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .strat-card {
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .strat-card h3 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .strat-card p {
+            font-size: 0.88rem;
+            color: #4b5563;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            header { flex-direction: column; align-items: flex-start; gap: 14px; }
+            .header-left { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    
+
+<div class="container">
+    <!-- Navigation Header with Back Button -->
+    <header>
+        <div class="header-left">
+            <!-- Back Button linking back to Page 1 -->
+            <a href="index.html" class="back-btn" onclick="if(history.length > 1 && document.referrer) { history.back(); return false; }">
+                &#8592; Back to Dashboard
+            </a>
+            <div>
+                <h1>LP's Strategy & Pricing Playbook</h1>
+                <p style="opacity: 0.9; font-size: 0.85rem; margin-top: 4px;">Page 2: Niche Pricing, Roadmap, Mockups & Marketing</p>
+            </div>
+        </div>
+        <span class="page-badge">Page 2 of 2</span>
+    </header>
+
+    <!-- SECTION 1: Niche Benchmarks & Pricing Guide -->
+    <div class="card">
+        <h2>1. High-Demand Digital Products & Pricing Benchmarks</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Niche</th>
+                        <th>Price Range (USD)</th>
+                        <th>Approx. Price (PHP)</th>
+                        <th>Target Audience</th>
+                        <th>Creation Effort</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Notion Life OS & Student Dashboards</strong></td>
+                        <td>$9.00 - $29.00</td>
+                        <td>₱500 - ₱1,600</td>
+                        <td>Students, Freelancers, Creators</td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Sheets / Excel Trackers</strong></td>
+                        <td>$7.00 - $25.00</td>
+                        <td>₱400 - ₱1,400</td>
+                        <td>Busy Professionals, Families</td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Canva Social Media Bundles (100+ Posts)</strong></td>
+                        <td>$12.00 - $35.00</td>
+                        <td>₱650 - ₱2,000</td>
+                        <td>Small Businesses, Influencers</td>
+                        <td><span class="tag tag-low">Low</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital Planners (GoodNotes / PDF)</strong></td>
+                        <td>$10.00 - $27.00</td>
+                        <td>₱550 - ₱1,500</td>
+                        <td>iPad & Tablet Users</td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Niche E-books & Workbooks</strong></td>
+                        <td>$7.00 - $19.00</td>
+                        <td>₱400 - ₱1,100</td>
+                        <td>Beginners, Skill Seekers</td>
+                        <td><span class="tag tag-low">Low</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SVG & Cricut Asset Packs</strong></td>
+                        <td>$5.00 - $15.00</td>
+                        <td>₱280 - ₱850</td>
+                        <td>Crafters, DIY Sellers</td>
+                        <td><span class="tag tag-low">Low</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Prompt Toolkits & ChatGPT Guides</strong></td>
+                        <td>$9.00 - $29.00</td>
+                        <td>₱500 - ₱1,600</td>
+                        <td>Marketers, Content Creators</td>
+                        <td><span class="tag tag-low">Low</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Step-by-Step Launch Roadmap -->
+    <div class="card">
+        <h2>2. Step-by-Step Payhip Launch Roadmap</h2>
+        <div class="steps-grid">
+            <div class="step-box">
+                <div class="step-number">Week 1</div>
+                <div class="step-title">Product & Lead Magnet</div>
+                <div class="step-desc">Pick 1 core niche. Build your primary paid product (e.g., Budget Tracker) plus a $0 freebie version to capture buyer emails.</div>
+            </div>
+            <div class="step-box">
+                <div class="step-number">Week 2</div>
+                <div class="step-title">Payhip Setup & Upload</div>
+                <div class="step-desc">Connect PayPal or Stripe under Settings > Payment Details. Create your store page and upload file assets (ZIP/PDF).</div>
+            </div>
+            <div class="step-box">
+                <div class="step-number">Week 3</div>
+                <div class="step-title">High-Converting Mockups</div>
+                <div class="step-desc">Design 16:9 laptop/tablet mockup frames in Canva. Highlight key automated features with clear zoomed-in text cards.</div>
+            </div>
+            <div class="step-box">
+                <div class="step-number">Week 4</div>
+                <div class="step-title">Organic Traffic Campaign</div>
+                <div class="step-desc">Post 3–5 Pinterest pins daily pointing to Payhip. Publish daily 15-sec TikTok/Reels screen recordings showing product features.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: High-Converting Mockup Ideas -->
+    <div class="card">
+        <h2>3. High-Converting Product Mockup Specs (Canva)</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mockup Style</th>
+                        <th>Canvas Size</th>
+                        <th>Visual Layout & Elements</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>3D Floating Device Display</strong></td>
+                        <td>16:9 (1920x1080)</td>
+                        <td>iPad or Laptop frame over a soft aesthetic desktop background displaying your live dashboard.</td>
+                        <td>Store Banners & Listing Hero Image</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Page Grid Spread</strong></td>
+                        <td>1:1 (1080x1080)</td>
+                        <td>Tilted overlapping screen cuts showcasing every tab, sub-page, and printable section.</td>
+                        <td>Instagram & Pinterest Posts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Feature Callout Cards</strong></td>
+                        <td>4:5 (1080x1350)</td>
+                        <td>Zoomed-in screenshots with clean arrows pointing to automated charts, formulas, or habit trackers.</td>
+                        <td>Secondary Listing Photos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Organic Marketing & Conversion Strategies -->
+    <div class="card">
+        <h2>4. Traffic & Conversion Growth Strategies</h2>
+        <div class="strat-grid">
+            <div class="strat-card">
+                <h3>📌 Pinterest Keyword Engine</h3>
+                <p>Create 3 to 5 Pinterest pins daily using high-intent search titles (e.g., <em>"Aesthetic Monthly Budget Planner 2026"</em>). Link pins directly to your Payhip store for passive, long-term traffic.</p>
+            </div>
+            <div class="strat-card">
+                <h3>🎥 Short-Form Screen Demos</h3>
+                <p>Record 15-second TikTok/Reels screen captures demonstrating the problem vs. solution (e.g., "Watch me auto-calculate my monthly savings in 5 seconds"). Put your store link in bio.</p>
+            </div>
+            <div class="strat-card">
+                <h3>🎁 Freemium Funnel Strategy</h3>
+                <p>List a simplified $0 basic version of your template on Payhip. Inside the free PDF download, include a <strong>30% OFF discount coupon code</strong> for your full paid master product.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

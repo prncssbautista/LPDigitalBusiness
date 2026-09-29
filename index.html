@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LP's Sales, Savings & Business Dashboard</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --bg-color: #f7f6fc;
+            --card-bg: #ffffff;
+            --primary: #5b42f3;
+            --primary-light: #8b78f6;
+            --accent-purple: #f0eeff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --green: #10b981;
+            --blue: #3b82f6;
+            --amber: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        aside {
+            width: 260px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .sidebar-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item a:hover, .sidebar-item.active a {
+            background: var(--accent-purple);
+            color: var(--primary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: calc(100% - 260px);
+        }
+
+        /* Header Banner */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(91, 66, 243, 0.2);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Top KPI Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-card h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .metric-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        /* Charts Layout */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* Data Tables Layout */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .table-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--accent-purple);
+            color: var(--primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 12px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td[contenteditable="true"] {
+            background-color: #fefce8;
+            outline: none;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        td[contenteditable="true"]:focus {
+            background-color: #fef08a;
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-active { background: #ecfdf5; color: var(--green); }
+        .badge-planned { background: #eff6ff; color: var(--blue); }
+
+        .niche-section {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .niche-section h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .niche-section p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .niche-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .niche-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .niche-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .niche-body {
+            padding: 16px;
+        }
+
+        .niche-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .niche-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .niche-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--accent-purple);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 900px) {
+            aside { width: 70px; padding: 16px 10px; }
+            .sidebar-brand span:not(:first-child), .sidebar-item span { display: none; }
+            .main-content { margin-left: 70px; max-width: calc(100% - 70px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="sidebar-brand">
+            <span></span> <span>LP's Digital Business</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item active">
+                <a href="index.html"> <span>Dashboard</span></a>
+            </li>
+             <li class="sidebar-item">
+                <a href="page2.html"> <span>Playbook</span></a>
+            </li>
+            <li class="sidebar-item">
+                <a href="products.html"> <span>Libraries</span></a>
+            </li>
+            <li class="sidebar-item">
+                <a href="to_do.html"> <span>To-Do List</span></a>
+            </li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <header>
+            <div>
+                <h1>LP's Sales & Income Dashboard</h1>
+                <p style="opacity: 0.9; font-size: 0.85rem; margin-top: 4px;">Track Sales, Net Savings, Income, and Top Product Niches</p>
+            </div>
+            <span style="font-size: 0.85rem; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px;">Firebase Live Sync (Singapore)</span>
+        </header>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Total Sales Revenue</h3>
+                <div class="value" id="total-sales" style="color: var(--green);">₱0.00</div>
+            </div>
+            <div class="metric-card">
+                <h3>Total Income (All Sources)</h3>
+                <div class="value" id="total-income" style="color: var(--blue);">₱0.00</div>
+            </div>
+            <div class="metric-card">
+                <h3>Net Savings Accumulated</h3>
+                <div class="value" id="total-savings" style="color: var(--primary);">₱0.00</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <canvas id="savingsPieChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="targetVsOverviewChart"></canvas>
+            </div>
+        </div>
+
+        <div class="tables-grid">
+            <div class="table-card">
+                <h3>Payhip Sales Tracker (Cloud Synced)</h3>
+                <table id="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Product Category</th>
+                            <th>Target Sales (₱)</th>
+                            <th>Actual Sales (₱)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-table-body">
+                        <!-- Populated via Firebase -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-card">
+                <h3>Product Inventory & Performance</h3>
+                <table id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Niche Category</th>
+                            <th>Avg Price (₱)</th>
+                            <th>Units Sold</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td contenteditable="true">Canva & Notion Templates</td>
+                            <td contenteditable="true">₱1,000.00</td>
+                            <td contenteditable="true">0</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Niche How-To E-Books</td>
+                            <td contenteditable="true">₱650.00</td>
+                            <td contenteditable="true">0</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Planner & SVG Cut Files</td>
+                            <td contenteditable="true">₱550.00</td>
+                            <td contenteditable="true">0</td>
+                            <td><span class="badge badge-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">Mini-Courses & Consults</td>
+                            <td contenteditable="true">₱2,800.00</td>
+                            <td contenteditable="true">0</td>
+                            <td><span class="badge badge-planned">Planned</span></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">AI Prompt Bundles</td>
+                            <td contenteditable="true">₱850.00</td>
+                            <td contenteditable="true">0</td>
+                            <td><span class="badge badge-planned">Planned</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="niche-section">
+            <h2>Top Digital Product Categories to Sell on Payhip</h2>
+            <p>High-volume digital product categories, target audiences, and pricing benchmarks:</p>
+            
+            <div class="niche-grid">
+                <div class="niche-card">
+                    <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80" alt="Editable Templates">
+                    <div class="niche-body">
+                        <div class="niche-title">1. Editable Templates & Tools</div>
+                        <div class="niche-desc">Canva social media packs, Excel/Google Sheets budget trackers, Notion Life OS planners, and resume/contract templates.</div>
+                        <div class="niche-meta">
+                            <span>Target: Professionals & Creators</span>
+                            <span>₱400 – ₱2,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="niche-card">
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80" alt="E-Books and Guides">
+                    <div class="niche-body">
+                        <div class="niche-title">2. E-Books & Short Guides</div>
+                        <div class="niche-desc">Focused problem-solving PDF ebooks (e.g., SEO for beginners, freelancing kits, digital cookbooks, and habit journals).</div>
+                        <div class="niche-meta">
+                            <span>Target: Skill Seekers</span>
+                            <span>₱400 – ₱1,100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="niche-card">
+                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" alt="Printables & Design Assets">
+                    <div class="niche-body">
+                        <div class="niche-title">3. Printables & Design Assets</div>
+                        <div class="niche-desc">SVG cut files for Cricut, printable wall art, party invitations, and physical planner inserts for crafters and decorators.</div>
+                        <div class="niche-meta">
+                            <span>Target: Crafters & Planners</span>
+                            <span>₱280 – ₱850</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="niche-card">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Online Courses">
+                    <div class="niche-body">
+                        <div class="niche-title">4. Video Courses & Coaching</div>
+                        <div class="niche-desc">Short video tutorials, mini-courses, and 1-on-1 strategy coaching sessions hosted using Payhip's built-in course player.</div>
+                        <div class="niche-meta">
+                            <span>Target: Learners & Clients</span>
+                            <span>₱1,600 – ₱5,500+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="niche-card">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="AI Prompt Packs">
+                    <div class="niche-body">
+                        <div class="niche-title">5. AI Prompts & Digital Presets</div>
+                        <div class="niche-desc">Curated ChatGPT/Midjourney prompt bundles for niche professionals, photo Lightroom presets, and video LUTs.</div>
+                        <div class="niche-meta">
+                            <span>Target: Tech-Savvy Creators</span>
+                            <span>₱500 – ₱1,600</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDVOMR6z_WMK0MCS1M5uiJ5sZ0C9XzqiGI",
+        authDomain: "digitalbusinep.firebaseapp.com",
+        projectId: "digitalbusinep",
+        storageBucket: "digitalbusinep.appspot.com",
+        messagingSenderId: "1012494072802",
+        appId: "1:1012494072802:web:0726fde2f309efb21bd7bb",
+        measurementId: "G-YDWQKPX58"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let doughnutChart, barChart;
+    let initialCategories = [
+        { product: "1. Editable Templates & Tools", target: "25000", actual: "0" },
+        { product: "2. E-Books & Short Guides", target: "15000", actual: "0" },
+        { product: "3. Printables & Design Assets", target: "12000", actual: "0" },
+        { product: "4. Online Courses & Coaching", target: "20000", actual: "0" },
+        { product: "5. AI Prompt Packs & Presets", target: "10000", actual: "0" }
+    ];
+
+    function parseVal(val) {
+        let num = parseFloat(val.replace(/[^0-9.-]+/g, ""));
+        return isNaN(num) ? 0 : num;
+    }
+
+    function formatPHP(amount) {
+        return '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    db.collection("sales_tracker").get().then((snapshot) => {
+        if (snapshot.empty) {
+            initialCategories.forEach((item) => {
+                db.collection("sales_tracker").add(item);
+            });
+        }
+    });
+
+    db.collection("sales_tracker").onSnapshot((snapshot) => {
+        let tbody = document.getElementById('sales-table-body');
+        tbody.innerHTML = "";
+
+        let plannedSales = 0, actualSales = 0;
+        let productLabels = [];
+        let productSalesData = [];
+
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            let id = doc.id;
+
+            let pVal = parseVal(data.target);
+            let aVal = parseVal(data.actual);
+
+            plannedSales += pVal;
+            actualSales += aVal;
+
+            productLabels.push(data.product);
+            productSalesData.push(aVal);
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td contenteditable="true" onblur="updateFirestore('${id}', 'product', this.innerText)">${data.product}</td>
+                <td contenteditable="true" onblur="updateFirestore('${id}', 'target', this.innerText)">${data.target}</td>
+                <td contenteditable="true" onblur="updateFirestore('${id}', 'actual', this.innerText)">${data.actual}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        let totalIncome = actualSales;
+        let netSavings = totalIncome * 0.44;
+
+        document.getElementById('total-sales').innerText = formatPHP(actualSales);
+        document.getElementById('total-income').innerText = formatPHP(totalIncome);
+        document.getElementById('total-savings').innerText = formatPHP(netSavings);
+
+        renderCharts(productLabels, productSalesData, plannedSales, actualSales, totalIncome);
+    });
+
+    function updateFirestore(id, field, value) {
+        db.collection("sales_tracker").doc(id).update({
+            [field]: value
+        });
+    }
+
+    function renderCharts(labels, salesData, pSales, aSales, totalIncome) {
+        if (doughnutChart) doughnutChart.destroy();
+        const ctxDoughnut = document.getElementById('savingsPieChart').getContext('2d');
+        doughnutChart = new Chart(ctxDoughnut, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: salesData.every(v => v === 0) ? [1, 1, 1, 1, 1] : salesData,
+                    backgroundColor: ['#5b42f3', '#3b82f6', '#10b981', '#f59e0b', '#8b78f6']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Sales Breakdown by Category (₱)', font: { size: 14, weight: 'bold' } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let val = context.raw || 0;
+                                return ' ' + context.label + ': ' + formatPHP(val);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (barChart) barChart.destroy();
+        const ctxBar = document.getElementById('targetVsOverviewChart').getContext('2d');
+        barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Payhip Sales', 'Total Income'],
+                datasets: [
+                    { label: 'Target Goal (₱)', data: [pSales, pSales], backgroundColor: '#d1d5db' },
+                    { label: 'Actual Achieved (₱)', data: [aSales, totalIncome], backgroundColor: '#5b42f3' }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Target vs. Actual Overview (₱)', font: { size: 14, weight: 'bold' } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.dataset.label + ': ' + formatPHP(context.raw || 0);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return '₱' + value.toLocaleString('en-PH');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
