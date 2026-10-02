@@ -54,9 +54,39 @@
         button.submit-btn:hover { background: #6d28d9; }
         button.cancel-btn { background: #e2e8f0; color: #475569; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: none; }
 
-        .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .lib-card { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 20px; }
-        .lib-title { font-size: 1.1rem; font-weight: bold; color: #6b21a8; margin-bottom: 15px; border-bottom: 2px solid #e9d5ff; padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 18px; }
+        .lib-card { background: linear-gradient(145deg, #ffffff, #fbf7ff); border: 1px solid #eadcff; border-radius: 18px; padding: 20px; box-shadow: 0 5px 18px rgba(124,58,237,.06); }
+        .lib-card:hover { border-color:#d8b4fe; }
+        .lib-title { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+        .lib-title-main { display:flex; align-items:center; gap:10px; min-width:0; }
+        .lib-icon { width:42px; height:42px; border-radius:12px; display:grid; place-items:center; background:#f3e8ff; font-size:1.25rem; flex:0 0 auto; }
+        .lib-title h3 { font-size:1rem; color:#5b21b6; margin:0; line-height:1.25; }
+        .lib-subtitle { color:var(--text-light); font-size:.76rem; margin-top:3px; }
+        .lib-count { background:#f3e8ff; color:#7c3aed; padding:5px 9px; border-radius:999px; font-size:.75rem; font-weight:800; white-space:nowrap; }
+        .lib-toolbar { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 14px; }
+        .folder-new-btn, .folder-open-btn, .folder-up-btn { border:none; border-radius:9px; padding:8px 11px; cursor:pointer; font-size:.76rem; font-weight:700; transition:.18s; }
+        .folder-new-btn { background:#7c3aed; color:#fff; }
+        .folder-new-btn:hover { background:#6d28d9; transform:translateY(-1px); }
+        .folder-open-btn { background:#f3e8ff; color:#6d28d9; }
+        .folder-open-btn:hover { background:#e9d5ff; }
+        .folder-up-btn { background:#f1f5f9; color:#475569; }
+        .folder-up-btn:hover { background:#e2e8f0; }
+        .folder-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:10px; }
+        .folder-mini-card { background:#fff; border:1px solid #e9d5ff; border-radius:14px; padding:13px; min-height:105px; display:flex; flex-direction:column; justify-content:space-between; gap:9px; cursor:pointer; transition:.18s; }
+        .folder-mini-card:hover { background:#fcfaff; border-color:#c4b5fd; transform:translateY(-2px); box-shadow:0 6px 14px rgba(124,58,237,.08); }
+        .folder-mini-top { display:flex; align-items:flex-start; gap:9px; min-width:0; }
+        .folder-mini-icon { font-size:1.8rem; line-height:1; }
+        .folder-mini-name { font-weight:800; color:#4c1d95; word-break:break-word; font-size:.86rem; line-height:1.25; }
+        .folder-mini-meta { color:var(--text-light); font-size:.72rem; margin-top:3px; }
+        .folder-mini-open { color:#7c3aed; font-size:.72rem; font-weight:800; }
+        .empty-library { border:1px dashed #d8b4fe; background:#faf5ff; border-radius:12px; padding:18px; text-align:center; color:var(--text-light); font-size:.82rem; }
+        .library-section-label { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:16px 0 9px; color:#6b21a8; font-size:.82rem; font-weight:800; }
+        .product-folder-bar { display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin-bottom:15px; padding:12px 14px; background:#fff; border:1px solid #e9d5ff; border-radius:12px; box-shadow:0 3px 12px rgba(124,58,237,.05); }
+        .product-folder-bar strong { color:#6b21a8; }
+        .library-view-title { margin:0 0 5px; color:#5b21b6; font-size:1.15rem; }
+        .library-view-subtitle { color:var(--text-light); font-size:.82rem; margin-bottom:14px; }
+        .library-back { margin-bottom:12px; }
+        .library-product-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
 
         .product-item { background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
         .product-item h4 { font-size: 1rem; color: var(--text); margin-bottom: 5px; }
@@ -178,7 +208,11 @@
                         <option value="AI Prompt Packs & Presets">5. AI Prompt Packs & Presets</option>
                     </select>
                     <input type="url" id="prod-link" placeholder="External Link (Optional - Canva, Drive, Payhip)">
+                    <select id="prod-folder">
+                        <option value="">📁 Root of selected category</option>
+                    </select>
                 </div>
+                <div class="muted" style="margin:-4px 0 12px;">Choose a folder for this link. Create folders directly inside the category libraries below, then open them to view the links inside.</div>
 
                 <textarea id="prod-desc" placeholder="Short description, notes, or version updates..." rows="2" style="margin-bottom: 10px;"></textarea>
                 <p class="muted" style="margin-bottom: 15px;">Need to upload actual files or folders? Use the Shared Files & Folders section below. Files are saved in Firestore, not Firebase Cloud Storage.</p>
@@ -235,7 +269,8 @@
         </div>
 
         <div class="card">
-            <h2>Product Category Libraries</h2>
+            <h2>Product Category Libraries - LINKS</h2>
+            <div id="product-folder-bar" class="product-folder-bar" style="display:none;"></div>
             <div id="libraries-container" class="library-grid">
                 <p style="color: var(--text-light);">Loading libraries from cloud database...</p>
             </div>
@@ -311,6 +346,12 @@
     let currentFolderPath = "";
     let currentPreviewObjectUrl = null;
 
+    // Product-link folders are separate from the Shared File Library folders.
+    // Each folder belongs to one product category and can contain product links.
+    let productLinkFolders = [];
+    let currentProductFolderCategory = "";
+    let currentProductFolderPath = "";
+
     function escapeHtml(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -366,6 +407,7 @@
         const name = document.getElementById('prod-name').value.trim();
         const category = document.getElementById('prod-category').value;
         const link = document.getElementById('prod-link').value.trim();
+        const folderPath = normalizePath(document.getElementById('prod-folder').value || '');
         const desc = document.getElementById('prod-desc').value.trim();
         const submitBtn = document.getElementById('submit-btn-text');
 
@@ -378,7 +420,7 @@
             // section below. Existing legacy attachment data is preserved when editing.
             const fileUrl = editId ? window.currentEditingFileUrl || "" : "";
             const fileName = editId ? window.currentEditingFileName || "" : "";
-            await saveToFirestore(editId, name, category, link, desc, fileUrl, fileName);
+            await saveToFirestore(editId, name, category, link, desc, fileUrl, fileName, folderPath);
         } catch (error) {
             alert("Error saving product: " + error.message);
         } finally {
@@ -387,11 +429,12 @@
         }
     }
 
-    async function saveToFirestore(editId, name, category, link, desc, fileUrl, fileName) {
+    async function saveToFirestore(editId, name, category, link, desc, fileUrl, fileName, folderPath) {
         const productData = {
             name,
             category,
             link,
+            folderPath: normalizePath(folderPath || ""),
             description: desc,
             fileUrl: fileUrl || "",
             fileName: fileName || "",
@@ -407,10 +450,12 @@
         resetForm();
     }
 
-    function editProduct(id, name, category, link, desc, fileUrl, fileName) {
+    function editProduct(id, name, category, link, desc, fileUrl, fileName, folderPath) {
         document.getElementById('edit-product-id').value = id;
         document.getElementById('prod-name').value = name;
         document.getElementById('prod-category').value = category;
+        refreshProductFolderOptions(category, folderPath || "");
+        document.getElementById('prod-folder').value = normalizePath(folderPath || "");
         document.getElementById('prod-link').value = link;
         document.getElementById('prod-desc').value = desc;
 
@@ -438,15 +483,133 @@
         document.getElementById('form-heading').innerText = "Add New Product";
         document.getElementById('submit-btn-text').innerText = "+ Add Product";
         document.getElementById('cancel-edit-btn').style.display = "none";
+        const folderSelect = document.getElementById('prod-folder');
+        if (folderSelect) folderSelect.value = "";
         window.currentEditingFileUrl = "";
         window.currentEditingFileName = "";
     }
 
+    function getProductFolderParent(path) {
+        const normalized = normalizePath(path);
+        if (!normalized) return "";
+        const parts = normalized.split('/');
+        parts.pop();
+        return parts.join('/');
+    }
+
+    function productFolderMatchesParent(path, parent) {
+        return normalizePath(getProductFolderParent(path)) === normalizePath(parent);
+    }
+
+    function refreshProductFolderOptions(category, selectedPath = "") {
+        const select = document.getElementById('prod-folder');
+        if (!select) return;
+        const normalizedSelected = normalizePath(selectedPath);
+        const folders = productLinkFolders
+            .filter(folder => folder.category === category)
+            .sort((a,b) => normalizePath(a.path).localeCompare(normalizePath(b.path)));
+        select.innerHTML = `<option value="">📁 Root of selected category</option>` +
+            folders.map(folder => `<option value="${escapeHtml(normalizePath(folder.path))}">📁 ${escapeHtml(folder.path)}</option>`).join('');
+        if (normalizedSelected) select.value = normalizedSelected;
+        if (select.value !== normalizedSelected) select.value = "";
+    }
+
+    async function createProductLinkFolder(category, parentPath = "") {
+        category = decodeURIComponent(category || '');
+        parentPath = decodeURIComponent(parentPath || '');
+        if (!category) {
+            alert('Please choose a category first.');
+            return;
+        }
+        const parent = normalizePath(parentPath);
+        const rawName = prompt(`Create a folder inside ${category}${parent ? ` / ${parent}` : ''}:`, 'New Folder');
+        if (rawName === null) return;
+        const name = rawName.trim().replace(/\\/g, '/').replace(/\s+/g, ' ');
+        if (!name) return;
+        if (name.includes('/')) {
+            alert('Please use a folder name without "/".');
+            return;
+        }
+        const path = parent ? `${parent}/${name}` : name;
+        const id = encodeURIComponent(`${category}__${path}`);
+        try {
+            const ref = db.collection('product_link_folders').doc(id);
+            const existing = await ref.get();
+            if (existing.exists) {
+                alert('That folder already exists in this category.');
+                return;
+            }
+            await ref.set({
+                name,
+                path,
+                category,
+                parentPath: parent,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            openProductFolder(category, path);
+        } catch (error) {
+            alert('Could not create folder: ' + error.message);
+        }
+    }
+
+    function openProductFolder(category, path) {
+        currentProductFolderCategory = category;
+        currentProductFolderPath = normalizePath(path);
+        refreshProductFolderOptions(category, currentProductFolderPath);
+        document.getElementById('prod-category').value = category;
+        document.getElementById('prod-folder').value = currentProductFolderPath;
+        renderProducts(window.lastProductSnapshot);
+    }
+
+    function closeProductFolder() {
+        currentProductFolderCategory = "";
+        currentProductFolderPath = "";
+        renderProducts(window.lastProductSnapshot);
+    }
+
+    function renderProductFolderBar() {
+        const bar = document.getElementById('product-folder-bar');
+        if (!bar) return;
+        if (!currentProductFolderCategory) {
+            bar.style.display = 'none';
+            bar.innerHTML = '';
+            return;
+        }
+        const parts = currentProductFolderPath.split('/').filter(Boolean);
+        let crumbs = `<button type="button" class="folder-up-btn" onclick="closeProductFolder()">🏠 All Categories</button>`;
+        crumbs += `<strong>${escapeHtml(currentProductFolderCategory)}</strong>`;
+        let built = '';
+        parts.forEach((part, index) => {
+            built = built ? `${built}/${part}` : part;
+            const path = built;
+            const isCurrent = index === parts.length - 1;
+            crumbs += `<span>›</span>`;
+            if (isCurrent) crumbs += `<span>${escapeHtml(part)}</span>`;
+            else crumbs += `<button type="button" class="folder-up-btn" onclick="openProductFolderEncoded('${encodeURIComponent(currentProductFolderCategory)}','${encodeURIComponent(path)}')">📁 ${escapeHtml(part)}</button>`;
+        });
+        if (currentProductFolderPath) {
+            const parent = getProductFolderParent(currentProductFolderPath);
+            crumbs += `<button type="button" class="folder-up-btn" onclick="openProductFolderEncoded('${encodeURIComponent(currentProductFolderCategory)}','${encodeURIComponent(parent)}')">⬆️ Up</button>`;
+        }
+        bar.style.display = 'flex';
+        bar.innerHTML = crumbs;
+    }
+
+    function openProductFolderEncoded(category, path) {
+        openProductFolder(decodeURIComponent(category || ''), decodeURIComponent(path || ''));
+    }
+
+    function openProductCategory(category) {
+        openProductFolder(category, '');
+    }
+
     function renderProducts(snapshot) {
-        let productsByCategory = {};
+        window.lastProductSnapshot = snapshot;
+        const productsByCategory = {};
         categories.forEach(cat => productsByCategory[cat] = []);
 
-        snapshot.forEach((doc) => {
+        if (snapshot) snapshot.forEach((doc) => {
             const data = doc.data();
             if (productsByCategory[data.category]) {
                 productsByCategory[data.category].push({ id: doc.id, ...data });
@@ -462,62 +625,189 @@
         });
 
         const container = document.getElementById('libraries-container');
-        container.innerHTML = "";
+        container.innerHTML = '';
+        renderProductFolderBar();
 
-        categories.forEach(cat => {
-            const items = productsByCategory[cat];
-            let html = `<div class="lib-card">
-                <div class="lib-title"><span>${escapeHtml(cat)}</span><span style="font-size:0.8rem; background:#f3e8ff; color:#7c3aed; padding:2px 8px; border-radius:10px;">${items.length}</span></div>`;
+        // MAIN LIBRARY VIEW: show clean category cards instead of dumping every product on screen.
+        if (!currentProductFolderCategory) {
+            categories.forEach(cat => {
+                const allItems = productsByCategory[cat];
+                const folders = productLinkFolders
+                    .filter(folder => folder.category === cat && !getProductFolderParent(folder.path))
+                    .sort((a,b) => a.name.localeCompare(b.name));
+                const folderCount = productLinkFolders.filter(folder => folder.category === cat).length;
+                const unfiledCount = allItems.filter(item => !normalizePath(item.folderPath || '')).length;
 
-            if (items.length === 0) {
-                html += `<p style="font-size:0.85rem; color:var(--text-light);">No products uploaded yet.</p>`;
-            } else {
-                items.forEach(item => {
-                    const editData = encodeURIComponent(JSON.stringify({
-                        id: item.id,
-                        name: item.name || "",
-                        category: item.category || "",
-                        link: item.link || "",
-                        desc: item.description || "",
-                        fileUrl: item.fileUrl || "",
-                        fileName: item.fileName || "",
-                    }));
-                    html += `<div class="product-item">
-                        <h4>${escapeHtml(item.name)}</h4>
-                        <p>${escapeHtml(item.description || 'No description provided.')}</p>
-                        <div class="product-actions">
-                            <div class="product-links">`;
-                    if (item.link) {
-                        html += `<a href="${safeUrl(item.link)}" target="_blank" rel="noopener noreferrer">🔗 External Link</a>`;
-                    }
-                    if (item.fileUrl) {
-                        html += `<a href="${safeUrl(item.fileUrl)}" target="_blank" download="${escapeHtml(item.fileName || 'file')}">📄 View/Download (${escapeHtml(item.fileName || 'File')})</a>`;
-                    }
-                    if (!item.link && !item.fileUrl) {
-                        html += `<span style="font-size:0.78rem; color:var(--text-light);">No links or files attached</span>`;
-                    }
-                    html += `</div>
-                            <div class="action-btns">
-                                <button class="edit-btn" type="button" onclick="editProductFromEncoded('${editData}')">✏️ Edit</button>
-                                <button class="delete-btn" type="button" onclick="deleteProduct('${item.id}')">🗑️ Delete</button>
+                let html = `<div class="lib-card">
+                    <div class="lib-title">
+                        <div class="lib-title-main">
+                            <div class="lib-icon">📚</div>
+                            <div>
+                                <h3>${escapeHtml(cat)}</h3>
+                                <div class="lib-subtitle">${allItems.length} link${allItems.length === 1 ? '' : 's'} · ${folderCount} folder${folderCount === 1 ? '' : 's'}</div>
                             </div>
                         </div>
+                        <span class="lib-count">${allItems.length}</span>
+                    </div>
+                    <div class="lib-toolbar">
+                        <button type="button" class="folder-open-btn" data-open-category="${encodeURIComponent(cat)}">Open Library →</button>
+                        <button type="button" class="folder-new-btn" data-new-category="${encodeURIComponent(cat)}">＋ New Folder</button>
                     </div>`;
+
+                if (folders.length) {
+                    html += `<div class="library-section-label"><span>Folders</span><span>${folders.length}</span></div><div class="folder-grid">`;
+                    folders.forEach(folder => {
+                        const folderProducts = allItems.filter(item => {
+                            const fp = normalizePath(item.folderPath || '');
+                            const folderPath = normalizePath(folder.path);
+                            return fp === folderPath || fp.startsWith(folderPath + '/');
+                        }).length;
+                        html += `<div class="folder-mini-card" tabindex="0" data-product-folder-category="${encodeURIComponent(cat)}" data-product-folder-path="${encodeURIComponent(folder.path)}">
+                            <div class="folder-mini-top">
+                                <span class="folder-mini-icon">📁</span>
+                                <div><div class="folder-mini-name">${escapeHtml(folder.name)}</div><div class="folder-mini-meta">${folderProducts} link${folderProducts === 1 ? '' : 's'}</div></div>
+                            </div>
+                            <div class="folder-mini-open">Open folder →</div>
+                        </div>`;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `<div class="empty-library">No folders yet. Click <strong>＋ New Folder</strong> to organize your links.</div>`;
+                }
+
+                if (unfiledCount) {
+                    html += `<div class="library-section-label"><span>Unfiled links</span><span>${unfiledCount}</span></div>
+                        <button type="button" class="folder-up-btn" data-open-category="${encodeURIComponent(cat)}">View unfiled links →</button>`;
+                }
+                html += `</div>`;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+
+            container.querySelectorAll('[data-open-category]').forEach(button => {
+                button.addEventListener('click', event => {
+                    event.preventDefault();
+                    openProductCategory(decodeURIComponent(button.dataset.openCategory || ''));
                 });
-            }
+            });
+            container.querySelectorAll('[data-new-category]').forEach(button => {
+                button.addEventListener('click', event => {
+                    event.preventDefault();
+                    createProductLinkFolder(button.dataset.newCategory || '', '');
+                });
+            });
+            container.querySelectorAll('[data-product-folder-category]').forEach(card => {
+                const open = () => openProductFolderEncoded(card.dataset.productFolderCategory, card.dataset.productFolderPath);
+                card.addEventListener('click', open);
+                card.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
+                });
+            });
+            return;
+        }
+
+        // OPEN LIBRARY / FOLDER VIEW
+        const cat = currentProductFolderCategory;
+        const allItems = productsByCategory[cat] || [];
+        const visiblePath = normalizePath(currentProductFolderPath);
+        const folders = productLinkFolders
+            .filter(folder => folder.category === cat && productFolderMatchesParent(folder.path, visiblePath))
+            .sort((a,b) => a.name.localeCompare(b.name));
+        const items = allItems.filter(item => normalizePath(item.folderPath || '') === visiblePath);
+
+        let html = `<div class="lib-card" style="grid-column:1/-1;">
+            <div class="lib-title">
+                <div class="lib-title-main">
+                    <div class="lib-icon">${visiblePath ? '📁' : '📚'}</div>
+                    <div>
+                        <h3>${escapeHtml(visiblePath ? visiblePath.split('/').pop() : cat)}</h3>
+                        <div class="lib-subtitle">${escapeHtml(cat)} · ${items.length} link${items.length === 1 ? '' : 's'}</div>
+                    </div>
+                </div>
+                <span class="lib-count">${items.length}</span>
+            </div>
+            <div class="lib-toolbar">
+                <button type="button" class="folder-up-btn" data-back-to-all>← All Libraries</button>
+                ${visiblePath ? `<button type="button" class="folder-up-btn" data-parent-folder="1">⬆ Up</button>` : ''}
+                <button type="button" class="folder-new-btn" data-new-current-folder="1">＋ New Folder</button>
+            </div>`;
+
+        if (folders.length) {
+            html += `<div class="library-section-label"><span>${visiblePath ? 'Subfolders' : 'Folders'}</span><span>${folders.length}</span></div><div class="folder-grid">`;
+            folders.forEach(folder => {
+                const folderProducts = allItems.filter(item => {
+                    const fp = normalizePath(item.folderPath || '');
+                    const folderPath = normalizePath(folder.path);
+                    return fp === folderPath || fp.startsWith(folderPath + '/');
+                }).length;
+                html += `<div class="folder-mini-card" tabindex="0" data-product-folder-category="${encodeURIComponent(cat)}" data-product-folder-path="${encodeURIComponent(folder.path)}">
+                    <div class="folder-mini-top"><span class="folder-mini-icon">📁</span><div><div class="folder-mini-name">${escapeHtml(folder.name)}</div><div class="folder-mini-meta">${folderProducts} link${folderProducts === 1 ? '' : 's'}</div></div></div>
+                    <div class="folder-mini-open">Open folder →</div>
+                </div>`;
+            });
             html += `</div>`;
-            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        if (items.length) {
+            html += `<div class="library-section-label"><span>${visiblePath ? 'Links in this folder' : 'Unfiled links'}</span><span>${items.length}</span></div><div class="library-product-list">`;
+            items.forEach(item => {
+                const editData = encodeURIComponent(JSON.stringify({
+                    id: item.id, name: item.name || '', category: item.category || '', link: item.link || '',
+                    folderPath: item.folderPath || '', desc: item.description || '', fileUrl: item.fileUrl || '', fileName: item.fileName || ''
+                }));
+                html += `<div class="product-item">
+                    <h4>${escapeHtml(item.name)}</h4>
+                    <p>${escapeHtml(item.description || 'No description provided.')}</p>
+                    <div class="product-actions"><div class="product-links">`;
+                if (item.link) html += `<a href="${safeUrl(item.link)}" target="_blank" rel="noopener noreferrer">🔗 Open Link</a>`;
+                if (item.fileUrl) html += `<a href="${safeUrl(item.fileUrl)}" target="_blank" download="${escapeHtml(item.fileName || 'file')}">📄 View/Download</a>`;
+                if (!item.link && !item.fileUrl) html += `<span style="font-size:.78rem;color:var(--text-light);">No link attached</span>`;
+                html += `</div><div class="action-btns">
+                    <button class="edit-btn" type="button" onclick="editProductFromEncoded('${editData}')">✏️ Edit</button>
+                    <button class="delete-btn" type="button" onclick="deleteProduct('${item.id}')">🗑️ Delete</button>
+                </div></div></div>`;
+            });
+            html += `</div>`;
+        } else if (!folders.length) {
+            html += `<div class="empty-library" style="margin-top:14px;">This folder is empty. Add a product above and choose this folder.</div>`;
+        }
+
+        html += `</div>`;
+        container.insertAdjacentHTML('beforeend', html);
+
+        container.querySelector('[data-back-to-all]')?.addEventListener('click', closeProductFolder);
+        container.querySelector('[data-parent-folder]')?.addEventListener('click', () => openProductFolder(cat, getProductFolderParent(visiblePath)));
+        container.querySelector('[data-new-current-folder]')?.addEventListener('click', () => createProductLinkFolder(encodeURIComponent(cat), encodeURIComponent(visiblePath)));
+        container.querySelectorAll('[data-product-folder-category]').forEach(card => {
+            const open = () => openProductFolderEncoded(card.dataset.productFolderCategory, card.dataset.productFolderPath);
+            card.addEventListener('click', open);
+            card.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
+            });
         });
     }
 
     function editProductFromEncoded(encoded) {
         try {
             const item = JSON.parse(decodeURIComponent(encoded));
-            editProduct(item.id, item.name, item.category, item.link, item.desc, item.fileUrl, item.fileName);
+            editProduct(item.id, item.name, item.category, item.link, item.desc, item.fileUrl, item.fileName, item.folderPath || '');
         } catch (e) {
-            alert("Could not open the product for editing.");
+            alert('Could not open the product for editing.');
         }
     }
+
+    document.getElementById('prod-category').addEventListener('change', () => {
+        const category = document.getElementById('prod-category').value;
+        refreshProductFolderOptions(category, '');
+    });
+
+    db.collection('product_link_folders').onSnapshot(snapshot => {
+        productLinkFolders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const category = document.getElementById('prod-category').value;
+        refreshProductFolderOptions(category, document.getElementById('prod-folder').value || '');
+        renderProducts(window.lastProductSnapshot);
+    }, error => {
+        console.warn('Product-link folder listener error:', error);
+    });
 
     db.collection("products").onSnapshot((snapshot) => {
         renderProducts(snapshot);
