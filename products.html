@@ -45,13 +45,9 @@
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; transition: 0.2s; background: #fff; }
         input:focus, select:focus, textarea:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
 
-        .file-upload-box { background: #faf5ff; border: 2px dashed #d8b4fe; padding: 16px; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .file-upload-label { font-size: 0.9rem; font-weight: 600; color: #6b21a8; display: flex; align-items: center; gap: 8px; }
-        
         input[type="file"] { display: none; }
         .custom-file-upload { background: #7c3aed; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2); }
         .custom-file-upload:hover { background: #6d28d9; }
-        #file-chosen-name { font-size: 0.85rem; color: #64748b; font-style: italic; }
 
         .btn-group { display: flex; gap: 10px; }
         button.submit-btn { background: #7c3aed; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; }
@@ -60,21 +56,82 @@
 
         .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
         .lib-card { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 20px; }
-        .lib-title { font-size: 1.1rem; font-weight: bold; color: #6b21a8; margin-bottom: 15px; border-bottom: 2px solid #e9d5ff; padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .lib-title { font-size: 1.1rem; font-weight: bold; color: #6b21a8; margin-bottom: 15px; border-bottom: 2px solid #e9d5ff; padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 
         .product-item { background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
         .product-item h4 { font-size: 1rem; color: var(--text); margin-bottom: 5px; }
         .product-item p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 10px; }
 
-        .product-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; }
-        .product-links a { display: inline-block; background: #f3e8ff; color: #7c3aed; text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-right: 6px; }
-        .product-links a:hover { background: #7c3aed; color: white; }
+        .product-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #f1f5f9; padding-top: 10px; gap: 10px; }
+        .product-links { display: flex; flex-wrap: wrap; gap: 6px; }
+        .product-links a, .product-links button { display: inline-block; background: #f3e8ff; color: #7c3aed; text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; border: none; cursor: pointer; }
+        .product-links a:hover, .product-links button:hover { background: #7c3aed; color: white; }
 
         .action-btns { display: flex; gap: 6px; }
         .edit-btn { background: #e0f2fe; color: #0369a1; border: none; padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-weight: 600; }
         .edit-btn:hover { background: #bae6fd; }
         .delete-btn { background: #fee2e2; color: #b91c1c; border: none; padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-weight: 600; }
         .delete-btn:hover { background: #fecaca; }
+
+        .shared-upload { background: linear-gradient(135deg, #faf5ff, #f5f3ff); border: 2px dashed #c4b5fd; padding: 20px; border-radius: 14px; }
+        .shared-upload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 14px; }
+        .drop-zone { border: 2px dashed #d8b4fe; background: white; border-radius: 12px; padding: 20px; text-align: center; transition: 0.2s; cursor: pointer; }
+        .drop-zone.dragover { background: #f3e8ff; border-color: #7c3aed; }
+        .drop-zone strong { color: #6b21a8; }
+        .selected-files { margin-top: 12px; max-height: 190px; overflow: auto; display: flex; flex-direction: column; gap: 7px; }
+        .selected-file { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 0.82rem; display: flex; justify-content: space-between; gap: 10px; }
+        .muted { color: var(--text-light); font-size: 0.82rem; }
+        .progress-wrap { margin-top: 12px; display: none; }
+        .progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+        .progress-bar > div { height: 100%; width: 0; background: #7c3aed; transition: width 0.15s; }
+        .upload-status { margin-top: 8px; color: #6b21a8; font-size: 0.85rem; }
+
+        .library-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 15px; }
+        .library-toolbar input { flex: 1; min-width: 220px; }
+        .breadcrumb { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 14px; font-size: 0.85rem; }
+        .crumb { border: none; background: transparent; color: #7c3aed; cursor: pointer; font-weight: 600; }
+        .crumb.current { color: var(--text-light); cursor: default; }
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+        .file-card { background: white; border: 1px solid var(--border); border-radius: 11px; padding: 14px; transition: 0.2s; min-height: 150px; display: flex; flex-direction: column; }
+        .file-card:hover { border-color: #c4b5fd; box-shadow: 0 5px 15px rgba(124,58,237,0.08); transform: translateY(-1px); }
+        .file-icon { font-size: 2rem; margin-bottom: 8px; }
+        .file-name { font-weight: 700; word-break: break-word; }
+        .file-meta { color: var(--text-light); font-size: 0.75rem; margin-top: 4px; line-height: 1.45; }
+        .file-actions { display: flex; gap: 6px; margin-top: auto; padding-top: 10px; }
+        .small-btn { border: none; border-radius: 7px; padding: 6px 9px; cursor: pointer; font-size: 0.76rem; font-weight: 600; }
+        .preview-btn { background: #ede9fe; color: #6d28d9; }
+        .download-btn { background: #e0f2fe; color: #0369a1; }
+        .folder-card { background: #fff; border: 1px solid #ddd6fe; border-radius: 11px; padding: 14px; cursor: pointer; min-height: 112px; }
+        .folder-card:hover { background: #faf5ff; }
+        .folder-icon { font-size: 2.1rem; }
+        .folder-name { font-weight: 700; margin-top: 5px; word-break: break-word; }
+        .folder-actions { margin-top: 10px; display:flex; gap:6px; }
+        .folder-delete-btn { background:#fee2e2; color:#b91c1c; border:none; padding:5px 9px; border-radius:6px; font-size:.78rem; cursor:pointer; font-weight:600; }
+        .folder-delete-btn:hover { background:#fecaca; }
+        .selection-toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 14px; padding:10px 12px; background:#faf5ff; border:1px solid #ddd6fe; border-radius:10px; }
+        .selection-toolbar .selection-count { margin-right:auto; color:#6b21a8; font-weight:700; font-size:.85rem; }
+        .select-btn { border:none; border-radius:7px; padding:7px 10px; cursor:pointer; font-size:.78rem; font-weight:700; background:#ede9fe; color:#5b21b6; }
+        .select-btn:hover { background:#ddd6fe; }
+        .bulk-delete-btn { border:none; border-radius:7px; padding:7px 11px; cursor:pointer; font-size:.78rem; font-weight:700; background:#fee2e2; color:#b91c1c; }
+        .bulk-delete-btn:hover { background:#fecaca; }
+        .item-select { width:18px; height:18px; cursor:pointer; accent-color:#7c3aed; }
+        .card-select-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:5px; }
+        .section-label { grid-column: 1 / -1; font-size: 0.85rem; font-weight: 700; color: #6b21a8; margin-top: 5px; }
+        .empty-state { grid-column: 1 / -1; padding: 25px; text-align: center; color: var(--text-light); border: 1px dashed var(--border); border-radius: 10px; }
+
+        .modal { position: fixed; inset: 0; background: rgba(15,23,42,0.72); display: none; align-items: center; justify-content: center; padding: 25px; z-index: 1000; }
+        .modal.open { display: flex; }
+        .modal-panel { background: white; width: min(1100px, 96vw); height: min(780px, 92vh); border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+        .modal-header h3 { font-size: 1rem; word-break: break-word; }
+        .close-modal { border: none; background: #f1f5f9; border-radius: 8px; padding: 7px 11px; cursor: pointer; font-size: 1rem; }
+        .modal-body { flex: 1; padding: 12px; background: #f8fafc; overflow: auto; display: flex; align-items: center; justify-content: center; }
+        .preview-frame { width: 100%; height: 100%; border: none; background: white; border-radius: 8px; }
+        .preview-image { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+        .preview-video { max-width: 100%; max-height: 100%; }
+        .preview-audio { width: min(650px, 90%); }
+        .preview-text { width: 100%; height: 100%; overflow: auto; white-space: pre-wrap; background: #0f172a; color: #e2e8f0; padding: 18px; border-radius: 8px; font-family: Consolas, monospace; font-size: 0.84rem; }
+        .modal-footer { padding: 10px 18px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
 
         @media (max-width: 900px) {
             aside { width: 70px; padding: 20px 10px; }
@@ -91,9 +148,7 @@
         </div>
         <ul class="nav-links">
             <li><a href="index.html">📊 <span>Dashboard</span></a></li>
-            <li class="sidebar-item">
-                <a href="page2.html">📖 <span>Playbook</span></a>
-            </li>
+            <li class="sidebar-item"><a href="page2.html">📖 <span>Playbook</span></a></li>
             <li class="active"><a href="products.html">📁 <span>Libraries</span></a></li>
             <li><a href="to_do.html">✅ <span>To-Do List</span></a></li>
         </ul>
@@ -103,13 +158,13 @@
         <header>
             <div>
                 <h1>Product Libraries & Files</h1>
-                <p>Upload PDF/Image files, optional links, and manage your products</p>
+                <p>Manage your products, links, and shared files & folders</p>
             </div>
-            <span style="font-size: 0.85rem; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px;">Firebase Live Sync</span>
+            <span style="font-size: 0.85rem; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px;">Firestore Live Sync</span>
         </header>
 
         <div class="card">
-            <h2 id="form-heading">Add New Product or File</h2>
+            <h2 id="form-heading">Add New Product</h2>
             <form id="product-form" onsubmit="handleFormSubmit(event)">
                 <input type="hidden" id="edit-product-id" value="">
                 <div class="form-grid">
@@ -125,24 +180,58 @@
                     <input type="url" id="prod-link" placeholder="External Link (Optional - Canva, Drive, Payhip)">
                 </div>
 
-                <div class="file-upload-box">
-                    <span class="file-upload-label">📁 Attach PDF or Image File (Optional):</span>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label for="prod-file" class="custom-file-upload">
-                            📂 Choose File
-                        </label>
-                        <input type="file" id="prod-file" accept=".pdf,image/*" onchange="updateFileName(this)">
-                        <span id="file-chosen-name">No file chosen</span>
-                    </div>
-                </div>
-
-                <textarea id="prod-desc" placeholder="Short description, notes, or version updates..." rows="2" style="margin-bottom: 15px;"></textarea>
+                <textarea id="prod-desc" placeholder="Short description, notes, or version updates..." rows="2" style="margin-bottom: 10px;"></textarea>
+                <p class="muted" style="margin-bottom: 15px;">Need to upload actual files or folders? Use the Shared Files & Folders section below. Files are saved in Firestore, not Firebase Cloud Storage.</p>
                 
                 <div class="btn-group">
-                    <button type="submit" class="submit-btn" id="submit-btn-text">+ Upload Product</button>
+                    <button type="submit" class="submit-btn" id="submit-btn-text">+ Add Product</button>
                     <button type="button" class="cancel-btn" id="cancel-edit-btn" onclick="resetForm()">Cancel Edit</button>
                 </div>
             </form>
+        </div>
+
+        <div class="card">
+            <h2>Shared Files & Folders</h2>
+            <div class="shared-upload">
+                <div class="shared-upload-grid">
+                    <input type="text" id="uploader-name" placeholder="Your name (e.g., Princess)" value="">
+                    <select id="shared-category">
+                        <option value="" disabled selected>Select category for files</option>
+                        <option value="Editable Templates & Tools">1. Editable Templates & Tools</option>
+                        <option value="E-Books & Short Guides">2. E-Books & Short Guides</option>
+                        <option value="Printables & Design Assets">3. Printables & Design Assets</option>
+                        <option value="Online Courses & Coaching">4. Online Courses & Coaching</option>
+                        <option value="AI Prompt Packs & Presets">5. AI Prompt Packs & Presets</option>
+                    </select>
+                    <select id="upload-destination">
+                        <option value="">📍 Upload to: All Files (root)</option>
+                    </select>
+                </div>
+                <div class="muted" id="upload-destination-hint" style="margin:-4px 0 12px;">Choose an existing folder above to put new files inside it. Opening a folder below automatically selects it as the upload destination.</div>
+
+                <div class="drop-zone" id="drop-zone">
+                    <div style="font-size:2rem; margin-bottom:6px;">📁</div>
+                    <strong>Drop files here</strong>
+                    <div class="muted" style="margin:5px 0 12px;">Upload several files at once or preserve an entire folder structure.</div>
+                    <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+                        <label for="shared-files" class="custom-file-upload">📄 Choose Files</label>
+                        <label for="shared-folder" class="custom-file-upload">📂 Choose Folder</label>
+                    </div>
+                    <input type="file" id="shared-files" multiple>
+                    <input type="file" id="shared-folder" webkitdirectory directory multiple>
+                </div>
+
+                <div id="selected-files" class="selected-files"></div>
+                <div class="progress-wrap" id="shared-progress-wrap">
+                    <div class="progress-bar"><div id="shared-progress-bar"></div></div>
+                    <div class="upload-status" id="shared-upload-status">Preparing upload...</div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+                    <button class="submit-btn" type="button" id="upload-shared-btn">☁️ Save to Shared Library</button>
+                    <button class="cancel-btn" type="button" id="clear-selected-btn" style="display:inline-block;">Clear Selection</button>
+                </div>
+                <p class="muted" style="margin-top:10px;">Files are stored as small file chunks in Firestore; folder paths, categories, and file details are synced in real time so both connected users can see the same library. For best performance, keep individual files at or below 50 MB.</p>
+            </div>
         </div>
 
         <div class="card">
@@ -151,9 +240,49 @@
                 <p style="color: var(--text-light);">Loading libraries from cloud database...</p>
             </div>
         </div>
+
+        <div class="card">
+            <h2>Shared File Library</h2>
+            <div class="library-toolbar">
+                <input type="search" id="shared-search" placeholder="Search shared files and folders...">
+                <select id="shared-category-filter" style="max-width:280px;">
+                    <option value="">All categories</option>
+                    <option value="Editable Templates & Tools">Editable Templates & Tools</option>
+                    <option value="E-Books & Short Guides">E-Books & Short Guides</option>
+                    <option value="Printables & Design Assets">Printables & Design Assets</option>
+                    <option value="Online Courses & Coaching">Online Courses & Coaching</option>
+                    <option value="AI Prompt Packs & Presets">AI Prompt Packs & Presets</option>
+                </select>
+            </div>
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <div class="selection-toolbar">
+                <span class="selection-count" id="selection-count">0 items selected</span>
+                <button class="select-btn" type="button" id="select-visible-btn">☑️ Select All Visible</button>
+                <button class="select-btn" type="button" id="clear-library-selection-btn">↩️ Clear Selection</button>
+                <button class="bulk-delete-btn" type="button" id="delete-selected-btn">🗑️ Delete Selected</button>
+            </div>
+            <div id="shared-library-grid" class="file-grid">
+                <div class="empty-state">Loading shared files...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="preview-modal" aria-hidden="true">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h3 id="preview-title">Preview</h3>
+                <button class="close-modal" type="button" onclick="closePreview()">✕</button>
+            </div>
+            <div class="modal-body" id="preview-body"></div>
+            <div class="modal-footer">
+                <a id="preview-download" class="product-links" href="#" target="_blank" download>⬇️ Download</a>
+                <button class="small-btn preview-btn" type="button" onclick="closePreview()">Close</button>
+            </div>
+        </div>
     </div>
 
 <script>
+    // This keeps the Firebase project/config from your original products.html.
     const firebaseConfig = {
         apiKey: "AIzaSyDVOMR6z_WMK0MCS1M5uiJ5sZ0C9XzqiGI",
         authDomain: "digitalbusinep.firebaseapp.com",
@@ -175,76 +304,107 @@
         "AI Prompt Packs & Presets"
     ];
 
-    function updateFileName(input) {
-        const fileNameSpan = document.getElementById('file-chosen-name');
-        if (input.files && input.files.length > 0) {
-            fileNameSpan.textContent = input.files[0].name;
-            fileNameSpan.style.color = "#7c3aed";
-            fileNameSpan.style.fontWeight = "600";
-        } else {
-            fileNameSpan.textContent = "No file chosen";
-            fileNameSpan.style.color = "#64748b";
-            fileNameSpan.style.fontWeight = "normal";
+    let sharedFiles = [];
+    let sharedFolders = [];
+    let selectedSharedFiles = [];
+    let selectedLibraryItems = new Set();
+    let currentFolderPath = "";
+    let currentPreviewObjectUrl = null;
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function safeUrl(value) {
+        const raw = String(value || "").trim();
+        try {
+            const url = new URL(raw, window.location.href);
+            if (["http:", "https:", "blob:"].includes(url.protocol)) return url.href;
+        } catch (e) {}
+        return "#";
+    }
+
+    function formatBytes(bytes) {
+        if (!bytes) return "0 B";
+        const units = ["B", "KB", "MB", "GB", "TB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        return `${(bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0)} ${units[i]}`;
+    }
+
+    function formatDate(timestamp) {
+        if (!timestamp) return "";
+        try {
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleString();
+        } catch (e) {
+            return "";
         }
     }
 
-    function handleFormSubmit(e) {
+    function fileIcon(name, contentType) {
+        const n = String(name || "").toLowerCase();
+        if (contentType && contentType.startsWith("image/")) return "🖼️";
+        if (contentType === "application/pdf" || n.endsWith(".pdf")) return "📕";
+        if (contentType && contentType.startsWith("video/")) return "🎬";
+        if (contentType && contentType.startsWith("audio/")) return "🎵";
+        if (/\.(doc|docx|odt|rtf)$/.test(n)) return "📘";
+        if (/\.(xls|xlsx|csv)$/.test(n)) return "📊";
+        if (/\.(ppt|pptx)$/.test(n)) return "📙";
+        if (/\.(zip|rar|7z)$/.test(n)) return "🗜️";
+        if (/\.(txt|md|json|js|css|html)$/.test(n)) return "📝";
+        return "📄";
+    }
+
+    async function handleFormSubmit(e) {
         e.preventDefault();
         const editId = document.getElementById('edit-product-id').value;
-        const name = document.getElementById('prod-name').value;
+        const name = document.getElementById('prod-name').value.trim();
         const category = document.getElementById('prod-category').value;
-        const link = document.getElementById('prod-link').value;
-        const desc = document.getElementById('prod-desc').value;
-        const fileInput = document.getElementById('prod-file');
-        
+        const link = document.getElementById('prod-link').value.trim();
+        const desc = document.getElementById('prod-desc').value.trim();
         const submitBtn = document.getElementById('submit-btn-text');
-        submitBtn.innerText = "Saving...";
 
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = function(uploadEvent) {
-                const base64Url = uploadEvent.target.result;
-                saveToFirestore(editId, name, category, link, desc, base64Url, file.name);
-            };
-            reader.onerror = function(error) {
-                alert("Error reading file: " + error);
-                submitBtn.innerText = "+ Upload Product";
-            };
-            reader.readAsDataURL(file);
-        } else {
-            let existingFileUrl = editId ? window.currentEditingFileUrl || "" : "";
-            let existingFileName = editId ? window.currentEditingFileName || "" : "";
-            saveToFirestore(editId, name, category, link, desc, existingFileUrl, existingFileName);
+        submitBtn.innerText = editId ? "Updating..." : "Saving...";
+        submitBtn.disabled = true;
+
+        try {
+            // New product records no longer accept a single attachment here.
+            // Shared files/folders are uploaded through the Shared Files & Folders
+            // section below. Existing legacy attachment data is preserved when editing.
+            const fileUrl = editId ? window.currentEditingFileUrl || "" : "";
+            const fileName = editId ? window.currentEditingFileName || "" : "";
+            await saveToFirestore(editId, name, category, link, desc, fileUrl, fileName);
+        } catch (error) {
+            alert("Error saving product: " + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = editId ? "Update Product" : "+ Add Product";
         }
     }
 
-    function saveToFirestore(editId, name, category, link, desc, fileUrl, fileName) {
+    async function saveToFirestore(editId, name, category, link, desc, fileUrl, fileName) {
         const productData = {
-            name: name,
-            category: category,
-            link: link,
+            name,
+            category,
+            link,
             description: desc,
             fileUrl: fileUrl || "",
             fileName: fileName || "",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
         if (editId) {
-            db.collection("products").doc(editId).update(productData).then(() => {
-                resetForm();
-            }).catch((err) => {
-                alert("Error updating: " + err.message);
-                document.getElementById('submit-btn-text').innerText = "+ Upload Product";
-            });
+            await db.collection("products").doc(editId).update(productData);
         } else {
-            db.collection("products").add(productData).then(() => {
-                resetForm();
-            }).catch((err) => {
-                alert("Error saving: " + err.message);
-                document.getElementById('submit-btn-text').innerText = "+ Upload Product";
-            });
+            productData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            await db.collection("products").add(productData);
         }
+        resetForm();
     }
 
     function editProduct(id, name, category, link, desc, fileUrl, fileName) {
@@ -253,89 +413,878 @@
         document.getElementById('prod-category').value = category;
         document.getElementById('prod-link').value = link;
         document.getElementById('prod-desc').value = desc;
-        
-        window.currentEditingFileUrl = fileUrl;
-        window.currentEditingFileName = fileName;
 
-        if(fileName) {
-            document.getElementById('file-chosen-name').textContent = "Current: " + fileName;
-        }
+        window.currentEditingFileUrl = fileUrl || "";
+        window.currentEditingFileName = fileName || "";
 
-        document.getElementById('form-heading').innerText = "Edit Product / File";
+        document.getElementById('form-heading').innerText = "Edit Product";
         document.getElementById('submit-btn-text').innerText = "Update Product";
         document.getElementById('cancel-edit-btn').style.display = "block";
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function deleteProduct(id) {
-        if (confirm("Are you sure you want to delete this product?")) {
-            db.collection("products").doc(id).delete();
+    async function deleteProduct(id) {
+        if (!confirm("Are you sure you want to delete this product?")) return;
+        try {
+            await db.collection("products").doc(id).delete();
+        } catch (error) {
+            alert("Error deleting product: " + error.message);
         }
     }
 
     function resetForm() {
         document.getElementById('product-form').reset();
         document.getElementById('edit-product-id').value = "";
-        document.getElementById('file-chosen-name').textContent = "No file chosen";
-        document.getElementById('form-heading').innerText = "Add New Product or File";
-        document.getElementById('submit-btn-text').innerText = "+ Upload Product";
+        document.getElementById('form-heading').innerText = "Add New Product";
+        document.getElementById('submit-btn-text').innerText = "+ Add Product";
         document.getElementById('cancel-edit-btn').style.display = "none";
         window.currentEditingFileUrl = "";
         window.currentEditingFileName = "";
     }
 
-    db.collection("products").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+    function renderProducts(snapshot) {
         let productsByCategory = {};
         categories.forEach(cat => productsByCategory[cat] = []);
 
         snapshot.forEach((doc) => {
-            let data = doc.data();
+            const data = doc.data();
             if (productsByCategory[data.category]) {
                 productsByCategory[data.category].push({ id: doc.id, ...data });
             }
         });
 
-        let container = document.getElementById('libraries-container');
+        Object.values(productsByCategory).forEach(items => {
+            items.sort((a, b) => {
+                const at = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+                const bt = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+                return bt - at;
+            });
+        });
+
+        const container = document.getElementById('libraries-container');
         container.innerHTML = "";
 
         categories.forEach(cat => {
-            let items = productsByCategory[cat];
+            const items = productsByCategory[cat];
             let html = `<div class="lib-card">
-                <div class="lib-title"><span>${cat}</span> <span style="font-size:0.8rem; background:#f3e8ff; color:#7c3aed; padding:2px 8px; border-radius:10px;">${items.length}</span></div>`;
-            
+                <div class="lib-title"><span>${escapeHtml(cat)}</span><span style="font-size:0.8rem; background:#f3e8ff; color:#7c3aed; padding:2px 8px; border-radius:10px;">${items.length}</span></div>`;
+
             if (items.length === 0) {
-                html += `<p style="font-size: 0.85rem; color: var(--text-light);">No products uploaded yet.</p>`;
+                html += `<p style="font-size:0.85rem; color:var(--text-light);">No products uploaded yet.</p>`;
             } else {
                 items.forEach(item => {
+                    const editData = encodeURIComponent(JSON.stringify({
+                        id: item.id,
+                        name: item.name || "",
+                        category: item.category || "",
+                        link: item.link || "",
+                        desc: item.description || "",
+                        fileUrl: item.fileUrl || "",
+                        fileName: item.fileName || "",
+                    }));
                     html += `<div class="product-item">
-                        <h4>${item.name}</h4>
-                        <p>${item.description || 'No description provided.'}</p>
+                        <h4>${escapeHtml(item.name)}</h4>
+                        <p>${escapeHtml(item.description || 'No description provided.')}</p>
                         <div class="product-actions">
                             <div class="product-links">`;
-                    
                     if (item.link) {
-                        html += `<a href="${item.link}" target="_blank">🔗 External Link</a>`;
+                        html += `<a href="${safeUrl(item.link)}" target="_blank" rel="noopener noreferrer">🔗 External Link</a>`;
                     }
                     if (item.fileUrl) {
-                        html += `<a href="${item.fileUrl}" target="_blank" download="${item.fileName || 'file'}">📄 View/Download (${item.fileName || 'File'})</a>`;
+                        html += `<a href="${safeUrl(item.fileUrl)}" target="_blank" download="${escapeHtml(item.fileName || 'file')}">📄 View/Download (${escapeHtml(item.fileName || 'File')})</a>`;
                     }
                     if (!item.link && !item.fileUrl) {
-                        html += `<span style="font-size: 0.78rem; color: var(--text-light);">No links or files attached</span>`;
+                        html += `<span style="font-size:0.78rem; color:var(--text-light);">No links or files attached</span>`;
                     }
-
                     html += `</div>
                             <div class="action-btns">
-                                <button class="edit-btn" onclick="editProduct('${item.id}', '${item.name.replace(/'/g, "\\'")}', '${item.category}', '${item.link || ''}', '${(item.description || '').replace(/'/g, "\\'")}', '${item.fileUrl || ''}', '${item.fileName || ''}')">✏️ Edit</button>
-                                <button class="delete-btn" onclick="deleteProduct('${item.id}')">🗑️ Delete</button>
+                                <button class="edit-btn" type="button" onclick="editProductFromEncoded('${editData}')">✏️ Edit</button>
+                                <button class="delete-btn" type="button" onclick="deleteProduct('${item.id}')">🗑️ Delete</button>
                             </div>
                         </div>
                     </div>`;
                 });
             }
             html += `</div>`;
-            container.innerHTML += html;
+            container.insertAdjacentHTML('beforeend', html);
         });
+    }
+
+    function editProductFromEncoded(encoded) {
+        try {
+            const item = JSON.parse(decodeURIComponent(encoded));
+            editProduct(item.id, item.name, item.category, item.link, item.desc, item.fileUrl, item.fileName);
+        } catch (e) {
+            alert("Could not open the product for editing.");
+        }
+    }
+
+    db.collection("products").onSnapshot((snapshot) => {
+        renderProducts(snapshot);
+    }, (error) => {
+        document.getElementById('libraries-container').innerHTML = `<p style="color:#b91c1c;">Could not load products: ${escapeHtml(error.message)}</p>`;
     });
+
+    // ---------------- SHARED FILE LIBRARY ----------------
+
+    function getRelativePath(file) {
+        return file.webkitRelativePath || file.name;
+    }
+
+    function getUploadDestination() {
+        return normalizePath(document.getElementById('upload-destination').value || '');
+    }
+
+    function getUploadRelativePath(file) {
+        const selectedPath = normalizePath(getRelativePath(file));
+        const destination = getUploadDestination();
+        if (!destination) return selectedPath;
+        return selectedPath ? `${destination}/${selectedPath}` : destination;
+    }
+
+    function updateUploadDestinationOptions() {
+        const select = document.getElementById('upload-destination');
+        if (!select) return;
+        const current = getUploadDestination();
+        const category = document.getElementById('shared-category').value;
+        const paths = new Set();
+
+        sharedFolders.forEach(folder => {
+            if (!category || folder.category === category) {
+                const path = normalizePath(folder.path);
+                if (path) paths.add(path);
+            }
+        });
+
+        // Also include folders implied by already-uploaded files.
+        sharedFiles.forEach(file => {
+            if (!category || file.category === category) {
+                const path = normalizePath(file.folderPath);
+                if (path) {
+                    const parts = path.split('/');
+                    let built = '';
+                    parts.forEach(part => {
+                        built = built ? `${built}/${part}` : part;
+                        paths.add(built);
+                    });
+                }
+            }
+        });
+
+        const sorted = Array.from(paths).sort((a,b) => a.localeCompare(b));
+        select.innerHTML = `<option value="">📍 Upload to: All Files (root)</option>` +
+            sorted.map(path => `<option value="${escapeHtml(path)}">📁 ${escapeHtml(path)}</option>`).join('');
+
+        if (current && paths.has(current)) {
+            select.value = current;
+        } else if (currentFolderPath && paths.has(currentFolderPath)) {
+            select.value = currentFolderPath;
+        } else {
+            select.value = '';
+        }
+        updateUploadDestinationHint();
+    }
+
+    function updateUploadDestinationHint() {
+        const hint = document.getElementById('upload-destination-hint');
+        const destination = getUploadDestination();
+        if (!hint) return;
+        hint.textContent = destination
+            ? `New files will be saved inside: ${destination}`
+            : 'New files will be saved at the top level. Choose an existing folder above to put new files inside it.';
+    }
+
+    function normalizePath(path) {
+        return String(path || "").replace(/\\/g, "/").replace(/^\/+|\/+$/g, "");
+    }
+
+    function getFolderPath(relativePath) {
+        const normalized = normalizePath(relativePath);
+        const parts = normalized.split("/");
+        parts.pop();
+        return parts.join("/");
+    }
+
+    function renderSelectedFiles() {
+        const box = document.getElementById('selected-files');
+        if (!selectedSharedFiles.length) {
+            box.innerHTML = `<div class="muted">No files selected yet.</div>`;
+            return;
+        }
+        box.innerHTML = selectedSharedFiles.map((file, index) => `
+            <div class="selected-file">
+                <span>${fileIcon(file.name, file.type)} ${escapeHtml(getRelativePath(file))}</span>
+                <span class="muted">${formatBytes(file.size)}</span>
+            </div>
+        `).join("");
+    }
+
+    function addSelectedFiles(fileList) {
+        const incoming = Array.from(fileList || []);
+        const existingKeys = new Set(selectedSharedFiles.map(f => `${getRelativePath(f)}|${f.size}|${f.lastModified}`));
+        incoming.forEach(file => {
+            const key = `${getRelativePath(file)}|${file.size}|${file.lastModified}`;
+            if (!existingKeys.has(key)) {
+                selectedSharedFiles.push(file);
+                existingKeys.add(key);
+            }
+        });
+        renderSelectedFiles();
+    }
+
+    document.getElementById('shared-files').addEventListener('change', function() {
+        addSelectedFiles(this.files);
+        this.value = "";
+    });
+
+    document.getElementById('shared-folder').addEventListener('change', function() {
+        addSelectedFiles(this.files);
+        this.value = "";
+    });
+
+    const dropZone = document.getElementById('drop-zone');
+    ['dragenter', 'dragover'].forEach(eventName => dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    }));
+    ['dragleave', 'drop'].forEach(eventName => dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+    }));
+    dropZone.addEventListener('drop', e => addSelectedFiles(e.dataTransfer.files));
+
+    document.getElementById('clear-selected-btn').addEventListener('click', () => {
+        selectedSharedFiles = [];
+        renderSelectedFiles();
+    });
+
+    document.getElementById('upload-destination').addEventListener('change', updateUploadDestinationHint);
+    document.getElementById('shared-category').addEventListener('change', () => {
+        updateUploadDestinationOptions();
+    });
+
+    document.getElementById('upload-shared-btn').addEventListener('click', uploadSharedFiles);
+
+    // Firestore-only file storage. Cloud Storage is intentionally NOT used.
+    // Firestore documents are limited in size, so files are split into chunks.
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB per file
+    const CHUNK_CHARS = 600000; // safely below Firestore's 1 MiB document limit
+
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = String(reader.result || '');
+                const comma = result.indexOf(',');
+                resolve(comma >= 0 ? result.slice(comma + 1) : result);
+            };
+            reader.onerror = () => reject(reader.error || new Error('Could not read the file.'));
+            reader.readAsDataURL(file);
+        });
+    }
+
+    async function storeFileInFirestore(file, category, relativePath, uploaderName, onProgress) {
+        if (file.size > MAX_FILE_SIZE) {
+            throw new Error(`"${file.name}" is ${formatBytes(file.size)}. The Firestore-only uploader allows files up to 50 MB each.`);
+        }
+
+        const base64 = await readFileAsBase64(file);
+        const chunkCount = Math.max(1, Math.ceil(base64.length / CHUNK_CHARS));
+        const folderPath = getFolderPath(relativePath);
+        const fileRef = db.collection('product_files').doc();
+
+        await fileRef.set({
+            name: file.name,
+            originalName: file.name,
+            category,
+            folderPath,
+            relativePath,
+            contentType: file.type || 'application/octet-stream',
+            size: file.size,
+            uploaderName,
+            chunkCount,
+            storageType: 'firestore-chunks',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Write chunks in batches. Each chunk is a separate Firestore document.
+        for (let start = 0, index = 0; start < base64.length || index === 0; start += CHUNK_CHARS, index++) {
+            const chunk = base64.slice(start, start + CHUNK_CHARS);
+            await fileRef.collection('chunks').doc(String(index)).set({
+                index,
+                data: chunk
+            });
+            onProgress?.((index + 1) / chunkCount);
+        }
+
+        await createFolderRecords(category, folderPath, uploaderName);
+        return fileRef.id;
+    }
+
+    async function uploadSharedFiles() {
+        if (!selectedSharedFiles.length) {
+            alert("Choose one or more files or a folder first.");
+            return;
+        }
+        const category = document.getElementById('shared-category').value;
+        if (!category) {
+            alert("Please select a category for the shared files.");
+            return;
+        }
+
+        const uploaderName = document.getElementById('uploader-name').value.trim() || "Shared user";
+        const progressWrap = document.getElementById('shared-progress-wrap');
+        const progressBar = document.getElementById('shared-progress-bar');
+        const status = document.getElementById('shared-upload-status');
+        const button = document.getElementById('upload-shared-btn');
+        button.disabled = true;
+        progressWrap.style.display = 'block';
+        progressBar.style.width = '0%';
+
+        try {
+            const total = selectedSharedFiles.length;
+            const tooLarge = selectedSharedFiles.filter(file => file.size > MAX_FILE_SIZE);
+            if (tooLarge.length) {
+                throw new Error(`These files are over the 50 MB limit: ${tooLarge.map(f => f.name).join(', ')}`);
+            }
+
+            for (let i = 0; i < total; i++) {
+                const file = selectedSharedFiles[i];
+                const relativePath = normalizePath(getUploadRelativePath(file));
+                status.textContent = `Saving ${i + 1} of ${total}: ${relativePath}`;
+
+                await storeFileInFirestore(file, category, relativePath, uploaderName, withinFile => {
+                    const overall = ((i + withinFile) / total) * 100;
+                    progressBar.style.width = `${Math.min(100, overall)}%`;
+                });
+            }
+
+            status.textContent = `Saved ${total} file${total === 1 ? '' : 's'} successfully to Firestore.`;
+            progressBar.style.width = '100%';
+            selectedSharedFiles = [];
+            renderSelectedFiles();
+        } catch (error) {
+            console.error(error);
+            alert("Shared file save failed: " + error.message);
+            status.textContent = "Save failed. Check your Firestore rules/limits and try again.";
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    async function createFolderRecords(category, folderPath, createdBy) {
+        if (!folderPath) return;
+        const parts = normalizePath(folderPath).split('/');
+        let path = '';
+        for (const part of parts) {
+            path = path ? `${path}/${part}` : part;
+            const id = encodeURIComponent(`${category}__${path}`);
+            const ref = db.collection('product_folders').doc(id);
+            const existing = await ref.get();
+            if (!existing.exists) {
+                await ref.set({
+                    name: part,
+                    path,
+                    category,
+                    createdBy,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+    }
+
+    function currentFilterValues() {
+        return {
+            search: document.getElementById('shared-search').value.trim().toLowerCase(),
+            category: document.getElementById('shared-category-filter').value
+        };
+    }
+
+    function itemKey(type, value) {
+        return `${type}:${normalizePath(value)}`;
+    }
+
+    function fileItemKey(fileId) {
+        return `file:${fileId}`;
+    }
+
+    function isFolderSelected(path) {
+        const normalized = normalizePath(path);
+        return selectedLibraryItems.has(itemKey('folder', normalized));
+    }
+
+    function isFileSelected(file) {
+        const folderPath = normalizePath(file.folderPath);
+        if (selectedLibraryItems.has(fileItemKey(file.id))) return true;
+        return Array.from(selectedLibraryItems).some(key => {
+            if (!key.startsWith('folder:')) return false;
+            const selectedPath = normalizePath(key.slice(7));
+            return folderPath === selectedPath || folderPath.startsWith(selectedPath + '/');
+        });
+    }
+
+    function updateSelectionCount() {
+        const count = document.getElementById('selection-count');
+        if (!count) return;
+        const folderSelections = Array.from(selectedLibraryItems).filter(k => k.startsWith('folder:')).length;
+        const fileSelections = Array.from(selectedLibraryItems).filter(k => k.startsWith('file:')).length;
+        const total = folderSelections + fileSelections;
+        count.textContent = `${total} item${total === 1 ? '' : 's'} selected`;
+    }
+
+    function toggleLibraryItem(type, value, checked) {
+        const key = type === 'file' ? fileItemKey(value) : itemKey('folder', value);
+        if (checked) selectedLibraryItems.add(key);
+        else selectedLibraryItems.delete(key);
+        updateSelectionCount();
+        renderSharedLibrary();
+    }
+
+    function selectAllVisibleLibraryItems() {
+        const filters = currentFilterValues();
+        let visibleFiles = sharedFiles.filter(file => {
+            if (filters.category && file.category !== filters.category) return false;
+            const haystack = `${file.name} ${file.relativePath} ${file.folderPath} ${file.uploaderName}`.toLowerCase();
+            return !filters.search || haystack.includes(filters.search);
+        });
+        let visibleFolders = sharedFolders.filter(folder => {
+            if (filters.category && folder.category !== filters.category) return false;
+            const haystack = `${folder.name} ${folder.path}`.toLowerCase();
+            return !filters.search || haystack.includes(filters.search);
+        });
+
+        if (!filters.search) {
+            visibleFiles = visibleFiles.filter(file => normalizePath(file.folderPath) === normalizePath(currentFolderPath));
+            visibleFolders = visibleFolders.filter(folder => normalizePath(getFolderPath(folder.path)) === normalizePath(currentFolderPath));
+        } else {
+            visibleFolders = visibleFolders.filter(folder => !currentFolderPath || normalizePath(folder.path).startsWith(normalizePath(currentFolderPath)));
+            visibleFiles = visibleFiles.filter(file => !currentFolderPath || normalizePath(file.folderPath).startsWith(normalizePath(currentFolderPath)));
+        }
+
+        visibleFolders.forEach(folder => selectedLibraryItems.add(itemKey('folder', folder.path)));
+        visibleFiles.forEach(file => selectedLibraryItems.add(fileItemKey(file.id)));
+        updateSelectionCount();
+        renderSharedLibrary();
+    }
+
+    function clearLibrarySelection() {
+        selectedLibraryItems.clear();
+        updateSelectionCount();
+        renderSharedLibrary();
+    }
+
+    function renderSharedLibrary() {
+        const grid = document.getElementById('shared-library-grid');
+        const breadcrumb = document.getElementById('breadcrumb');
+        const filters = currentFilterValues();
+
+        let visibleFiles = sharedFiles.filter(file => {
+            if (filters.category && file.category !== filters.category) return false;
+            const haystack = `${file.name} ${file.relativePath} ${file.folderPath} ${file.uploaderName}`.toLowerCase();
+            return !filters.search || haystack.includes(filters.search);
+        });
+
+        let visibleFolders = sharedFolders.filter(folder => {
+            if (filters.category && folder.category !== filters.category) return false;
+            const haystack = `${folder.name} ${folder.path}`.toLowerCase();
+            return !filters.search || haystack.includes(filters.search);
+        });
+
+        if (!filters.search) {
+            visibleFiles = visibleFiles.filter(file => normalizePath(file.folderPath) === normalizePath(currentFolderPath));
+            visibleFolders = visibleFolders.filter(folder => {
+                const parent = getFolderPath(folder.path);
+                return normalizePath(parent) === normalizePath(currentFolderPath);
+            });
+        } else {
+            visibleFolders = visibleFolders.filter(folder => !currentFolderPath || folder.path.startsWith(currentFolderPath));
+            visibleFiles = visibleFiles.filter(file => !currentFolderPath || file.folderPath.startsWith(currentFolderPath));
+        }
+
+        const parts = normalizePath(currentFolderPath).split('/').filter(Boolean);
+        let crumbHtml = `<button class="crumb ${parts.length ? '' : 'current'}" type="button" data-folder-path="">🏠 All Files</button>`;
+        let accumulated = '';
+        parts.forEach((part, index) => {
+            accumulated = accumulated ? `${accumulated}/${part}` : part;
+            crumbHtml += `<span>›</span><button class="crumb ${index === parts.length - 1 ? 'current' : ''}" type="button" data-folder-path="${escapeHtml(accumulated)}">${escapeHtml(part)}</button>`;
+        });
+        crumbHtml += `<button class="small-btn submit-btn" type="button" id="upload-here-btn" style="margin-left:8px; padding:5px 10px;" title="Use this folder as the upload destination">⬆️ Upload here</button>`;
+        breadcrumb.innerHTML = crumbHtml;
+        const uploadHereButton = document.getElementById('upload-here-btn');
+        if (uploadHereButton) {
+            uploadHereButton.addEventListener('click', () => {
+                const destination = document.getElementById('upload-destination');
+                if (destination) {
+                    updateUploadDestinationOptions();
+                    destination.value = currentFolderPath;
+                    updateUploadDestinationHint();
+                }
+                document.querySelector('.shared-upload')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        }
+
+        let html = '';
+        if (visibleFolders.length) {
+            html += `<div class="section-label">📂 Folders</div>`;
+            visibleFolders.sort((a,b) => a.path.localeCompare(b.path));
+            visibleFolders.forEach(folder => {
+                const folderPathEncoded = encodeURIComponent(folder.path);
+                const checked = isFolderSelected(folder.path) ? 'checked' : '';
+                html += `<div class="folder-card" data-folder-path="${escapeHtml(folder.path)}" role="button" tabindex="0">
+                    <div class="card-select-row">
+                        <input class="item-select folder-select" type="checkbox" data-select-folder="${folderPathEncoded}" ${checked} aria-label="Select ${escapeHtml(folder.name)} for deletion">
+                    </div>
+                    <div class="folder-icon">📁</div>
+                    <div class="folder-name">${escapeHtml(folder.name)}</div>
+                    <div class="file-meta">${escapeHtml(folder.category)}</div>
+                    <div class="folder-actions">
+                        <button class="folder-delete-btn" type="button" data-delete-folder="${folderPathEncoded}" title="Delete this folder and everything inside it">🗑️ Delete folder</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        if (visibleFiles.length) {
+            html += `<div class="section-label">📄 Files</div>`;
+            visibleFiles.sort((a,b) => a.name.localeCompare(b.name));
+            visibleFiles.forEach(file => {
+                const id = encodeURIComponent(file.id);
+                const checked = isFileSelected(file) ? 'checked' : '';
+                html += `<div class="file-card">
+                    <div class="card-select-row">
+                        <input class="item-select file-select" type="checkbox" data-select-file="${id}" ${checked} aria-label="Select ${escapeHtml(file.name)} for deletion">
+                    </div>
+                    <div class="file-icon">${fileIcon(file.name, file.contentType)}</div>
+                    <div class="file-name">${escapeHtml(file.name)}</div>
+                    <div class="file-meta">${escapeHtml(file.category)}<br>${formatBytes(file.size)} · ${escapeHtml(file.uploaderName || 'Shared user')}</div>
+                    <div class="file-actions">
+                        <button class="small-btn preview-btn" type="button" onclick="previewSharedFile('${id}')">👀 Preview</button>
+                        <button class="small-btn download-btn" type="button" onclick="downloadSharedFile('${id}')">⬇️ Download</button>
+                        <button class="small-btn" style="background:#fee2e2;color:#b91c1c;" type="button" onclick="deleteSharedFile('${id}')">🗑️</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        if (!html) html = `<div class="empty-state">No files or folders found here.</div>`;
+        grid.innerHTML = html;
+        updateSelectionCount();
+
+        grid.querySelectorAll('.folder-card[data-folder-path]').forEach(card => {
+            const open = () => openSharedFolder(card.dataset.folderPath || '');
+            card.addEventListener('click', event => {
+                if (event.target.closest('.folder-delete-btn') || event.target.closest('.item-select')) return;
+                open();
+            });
+            card.addEventListener('keydown', event => {
+                if (event.target.closest('.folder-delete-btn') || event.target.closest('.item-select')) return;
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    open();
+                }
+            });
+        });
+
+        grid.querySelectorAll('.folder-select').forEach(box => {
+            box.addEventListener('click', e => e.stopPropagation());
+            box.addEventListener('change', () => toggleLibraryItem('folder', decodeURIComponent(box.dataset.selectFolder), box.checked));
+        });
+        grid.querySelectorAll('.file-select').forEach(box => {
+            box.addEventListener('click', e => e.stopPropagation());
+            box.addEventListener('change', () => toggleLibraryItem('file', decodeURIComponent(box.dataset.selectFile), box.checked));
+        });
+
+        grid.querySelectorAll('[data-delete-folder]').forEach(button => {
+            button.addEventListener('click', event => {
+                event.preventDefault();
+                event.stopPropagation();
+                deleteSharedFolder(button.dataset.deleteFolder || '');
+            });
+        });
+        breadcrumb.querySelectorAll('[data-folder-path]').forEach(button => {
+            button.addEventListener('click', () => openSharedFolder(button.dataset.folderPath || ''));
+        });
+    }
+
+    function openSharedFolder(path) {
+        currentFolderPath = normalizePath(path);
+        updateUploadDestinationOptions();
+        const destination = document.getElementById('upload-destination');
+        if (destination) {
+            destination.value = currentFolderPath;
+            updateUploadDestinationHint();
+        }
+        renderSharedLibrary();
+    }
+
+    document.getElementById('shared-search').addEventListener('input', renderSharedLibrary);
+    document.getElementById('shared-category-filter').addEventListener('change', () => {
+        currentFolderPath = '';
+        renderSharedLibrary();
+    });
+
+    document.getElementById('select-visible-btn').addEventListener('click', selectAllVisibleLibraryItems);
+    document.getElementById('clear-library-selection-btn').addEventListener('click', clearLibrarySelection);
+    document.getElementById('delete-selected-btn').addEventListener('click', deleteSelectedLibraryItems);
+
+    db.collection('product_files').onSnapshot(snapshot => {
+        sharedFiles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        updateUploadDestinationOptions();
+        renderSharedLibrary();
+    }, error => {
+        document.getElementById('shared-library-grid').innerHTML = `<div class="empty-state" style="color:#b91c1c;">Could not load shared files: ${escapeHtml(error.message)}</div>`;
+    });
+
+    db.collection('product_folders').onSnapshot(snapshot => {
+        sharedFolders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        updateUploadDestinationOptions();
+        renderSharedLibrary();
+    }, error => console.warn('Folder listener error:', error));
+
+    async function deleteSelectedLibraryItems() {
+        const selected = Array.from(selectedLibraryItems);
+        if (!selected.length) {
+            alert('Please select at least one file or folder first.');
+            return;
+        }
+
+        const selectedFolders = selected.filter(k => k.startsWith('folder:')).map(k => normalizePath(k.slice(7)));
+        const selectedFileIds = selected.filter(k => k.startsWith('file:')).map(k => k.slice(5));
+
+        // If a parent folder is selected, nested folder selections are redundant.
+        const effectiveFolders = selectedFolders.filter(path => !selectedFolders.some(other => other !== path && path.startsWith(other + '/')));
+        const folderSet = new Set(effectiveFolders);
+
+        const filesToDelete = new Map();
+        sharedFiles.forEach(file => {
+            const folderPath = normalizePath(file.folderPath);
+            if (selectedFileIds.includes(file.id) || effectiveFolders.some(folder => folderPath === folder || folderPath.startsWith(folder + '/'))) {
+                filesToDelete.set(file.id, file);
+            }
+        });
+
+        const foldersToDelete = sharedFolders.filter(folder => {
+            const path = normalizePath(folder.path);
+            return effectiveFolders.some(parent => path === parent || path.startsWith(parent + '/'));
+        });
+
+        const fileCount = filesToDelete.size;
+        const folderCount = foldersToDelete.length;
+        const parts = [];
+        if (folderCount) parts.push(`${folderCount} folder${folderCount === 1 ? '' : 's'}`);
+        if (fileCount) parts.push(`${fileCount} file${fileCount === 1 ? '' : 's'}`);
+        const confirmed = confirm(`Delete ${parts.join(' and ')}?\n\nFolders will also delete everything inside them. This cannot be undone.`);
+        if (!confirmed) return;
+
+        const deleteButton = document.getElementById('delete-selected-btn');
+        if (deleteButton) { deleteButton.disabled = true; deleteButton.textContent = 'Deleting...'; }
+
+        try {
+            const refsToDelete = [];
+            foldersToDelete.forEach(folder => refsToDelete.push(db.collection('product_folders').doc(folder.id)));
+
+            for (const file of filesToDelete.values()) {
+                const chunks = await db.collection('product_files').doc(file.id).collection('chunks').get();
+                chunks.forEach(chunk => refsToDelete.push(chunk.ref));
+                refsToDelete.push(db.collection('product_files').doc(file.id));
+            }
+
+            for (let i = 0; i < refsToDelete.length; i += 450) {
+                const batch = db.batch();
+                refsToDelete.slice(i, i + 450).forEach(ref => batch.delete(ref));
+                await batch.commit();
+            }
+
+            selectedLibraryItems.clear();
+            updateSelectionCount();
+            if (currentFolderPath && effectiveFolders.some(folder => currentFolderPath === folder || currentFolderPath.startsWith(folder + '/'))) {
+                openSharedFolder('');
+            } else {
+                renderSharedLibrary();
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Could not delete the selected items: ' + error.message);
+        } finally {
+            if (deleteButton) { deleteButton.disabled = false; deleteButton.textContent = '🗑️ Delete Selected'; }
+        }
+    }
+
+    async function deleteSharedFolder(encodedPath) {
+        const folderPath = normalizePath(decodeURIComponent(encodedPath || ''));
+        if (!folderPath) return;
+
+        const folderRecord = sharedFolders.find(folder => normalizePath(folder.path) === folderPath);
+        const category = folderRecord?.category || '';
+        const filesInside = sharedFiles.filter(file => {
+            const path = normalizePath(file.folderPath);
+            return path === folderPath || path.startsWith(folderPath + '/');
+        });
+        const foldersInside = sharedFolders.filter(folder => {
+            const path = normalizePath(folder.path);
+            return path === folderPath || path.startsWith(folderPath + '/');
+        });
+
+        const fileLabel = filesInside.length === 1 ? '1 file' : `${filesInside.length} files`;
+        const folderLabel = foldersInside.length === 1 ? '1 folder record' : `${foldersInside.length} folder records`;
+        const confirmed = confirm(
+            `Delete the folder "${folderPath}" and everything inside it?\n\n` +
+            `This will permanently delete ${fileLabel} and ${folderLabel} from the shared library.`
+        );
+        if (!confirmed) return;
+
+        try {
+            // Firestore batches are limited to 500 writes, so delete in safe chunks.
+            const refsToDelete = [];
+            foldersInside.forEach(folder => {
+                refsToDelete.push(db.collection('product_folders').doc(folder.id));
+            });
+
+            // Every stored file has a parent document plus one or more chunk documents.
+            for (const file of filesInside) {
+                const chunkSnapshot = await db.collection('product_files').doc(file.id).collection('chunks').get();
+                chunkSnapshot.forEach(chunkDoc => refsToDelete.push(chunkDoc.ref));
+                refsToDelete.push(db.collection('product_files').doc(file.id));
+            }
+
+            for (let i = 0; i < refsToDelete.length; i += 450) {
+                const batch = db.batch();
+                refsToDelete.slice(i, i + 450).forEach(ref => batch.delete(ref));
+                await batch.commit();
+            }
+
+            // If the user was viewing the deleted folder (or a child), return to the root.
+            if (currentFolderPath === folderPath || currentFolderPath.startsWith(folderPath + '/')) {
+                openSharedFolder('');
+            } else {
+                renderSharedLibrary();
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Could not delete folder: ' + error.message);
+        }
+    }
+
+    async function deleteSharedFile(encodedId) {
+        const id = decodeURIComponent(encodedId);
+        const file = sharedFiles.find(item => item.id === id);
+        if (!file) return;
+        if (!confirm(`Delete "${file.name}" from the shared library?`)) return;
+        try {
+            const chunks = await db.collection('product_files').doc(id).collection('chunks').get();
+            const batch = db.batch();
+            chunks.forEach(chunkDoc => batch.delete(chunkDoc.ref));
+            batch.delete(db.collection('product_files').doc(id));
+            await batch.commit();
+        } catch (error) {
+            alert('Could not delete file: ' + error.message);
+        }
+    }
+
+    async function getFileBlob(file) {
+        const chunkSnapshot = await db.collection('product_files').doc(file.id)
+            .collection('chunks').orderBy('index').get();
+        if (chunkSnapshot.empty) throw new Error('No file data was found in Firestore.');
+
+        const parts = [];
+        chunkSnapshot.forEach(doc => parts.push(doc.data().data || ''));
+        const binaryString = atob(parts.join(''));
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
+        return new Blob([bytes], { type: file.contentType || 'application/octet-stream' });
+    }
+
+    async function downloadSharedFile(encodedId) {
+        const id = decodeURIComponent(encodedId);
+        const file = sharedFiles.find(item => item.id === id);
+        if (!file) return;
+
+        try {
+            const blob = await getFileBlob(file);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name || 'download';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (error) {
+            alert('Could not download file: ' + error.message);
+        }
+    }
+
+    async function previewSharedFile(encodedId) {
+        const id = decodeURIComponent(encodedId);
+        const file = sharedFiles.find(item => item.id === id);
+        if (!file) return;
+
+        const modal = document.getElementById('preview-modal');
+        const body = document.getElementById('preview-body');
+        document.getElementById('preview-title').textContent = file.name;
+        document.getElementById('preview-download').href = '#';
+        document.getElementById('preview-download').onclick = (event) => {
+            event.preventDefault();
+            downloadSharedFile(encodedId);
+        };
+        body.innerHTML = `<div class="muted">Loading preview from Firestore...</div>`;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+
+        const type = (file.contentType || '').toLowerCase();
+        const name = (file.name || '').toLowerCase();
+
+        try {
+            const blob = await getFileBlob(file);
+            if (currentPreviewObjectUrl) URL.revokeObjectURL(currentPreviewObjectUrl);
+            currentPreviewObjectUrl = URL.createObjectURL(blob);
+
+            if (type.startsWith('image/')) {
+                body.innerHTML = `<img class="preview-image" src="${safeUrl(currentPreviewObjectUrl)}" alt="${escapeHtml(file.name)}">`;
+            } else if (type === 'application/pdf' || name.endsWith('.pdf')) {
+                body.innerHTML = `<iframe class="preview-frame" src="${safeUrl(currentPreviewObjectUrl)}"></iframe>`;
+            } else if (type.startsWith('video/')) {
+                body.innerHTML = `<video class="preview-video" controls src="${safeUrl(currentPreviewObjectUrl)}"></video>`;
+            } else if (type.startsWith('audio/')) {
+                body.innerHTML = `<audio class="preview-audio" controls src="${safeUrl(currentPreviewObjectUrl)}"></audio>`;
+            } else if (isTextFile(name, type)) {
+                const text = await blob.text();
+                body.innerHTML = `<pre class="preview-text">${escapeHtml(text)}</pre>`;
+            } else {
+                body.innerHTML = `<div style="text-align:center; max-width:600px;"><div style="font-size:4rem;">${fileIcon(file.name, file.contentType)}</div><h3 style="margin:10px 0;">Preview not available in the browser</h3><p class="muted">This file type can still be downloaded using the button below.</p></div>`;
+            }
+        } catch (error) {
+            body.innerHTML = `<div style="text-align:center; max-width:600px;"><h3>Preview unavailable</h3><p class="muted">${escapeHtml(error.message)}</p></div>`;
+        }
+    }
+
+    function isTextFile(name, type) {
+        return type.startsWith('text/') || /\.(txt|md|csv|json|js|css|html|xml|log)$/i.test(name);
+    }
+
+    function closePreview() {
+        const modal = document.getElementById('preview-modal');
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.getElementById('preview-body').innerHTML = '';
+        if (currentPreviewObjectUrl) {
+            URL.revokeObjectURL(currentPreviewObjectUrl);
+            currentPreviewObjectUrl = null;
+        }
+    }
+
+    document.getElementById('preview-modal').addEventListener('click', function(e) {
+        if (e.target === this) closePreview();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePreview();
+    });
+
+    renderSelectedFiles();
+    updateUploadDestinationOptions();
+    updateUploadDestinationHint();
 </script>
 
 </body>
